@@ -1,0 +1,84 @@
+# EstuLanches - ambiente de produção
+# Uso:  cp .env.example .env  (e troque as senhas)
+#       docker compose up -d --build
+#       docker compose ps
+#       docker compose logs app db redis
+
+name: estulanches
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: estulanches-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: America/Sao_Paulo
+    volumes:
+      - pgdata:/var/lib/postgresql/data      # dados persistem entre reinícios
+    networks:
+      - backend
+    # Sem "ports": o banco NÃO fica exposto fora da rede interna do Docker
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: estulanches-redis
+    restart: unless-stopped
+    command: ["redis-server", "--save", "", "--appendonly", "no"]   # só contadores, sem persistência
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: estulanches:1.0.0
+    container_name: estulanches-app
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy            # só sobe quando o banco está pronto
+      redis:
+        condition: service_healthy
+    environment:
+      APP_ENV: production
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      SECRET_KEY: ${SECRET_KEY}
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      JWT_EXPIRES_MINUTES: ${JWT_EXPIRES_MINUTES:-60}
+      RATELIMIT_STORAGE_URI: redis://redis:6379/0   # contador de tentativas compartilhado entre workers
+      TZ: America/Sao_Paulo
+    ports:
+      - "${APP_PORT:-8000}:8000"
+    networks:
+      - backend
+    read_only: true                           # sistema de arquivos somente leitura
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
+    driver: bridge

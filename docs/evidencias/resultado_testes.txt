@@ -1,0 +1,77 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python
+rootdir: /home/claude/estulanches
+configfile: pytest.ini
+testpaths: tests
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 54 items
+
+tests/integration/test_api.py::test_health_confirma_conexao_com_banco PASSED [  1%]
+tests/integration/test_api.py::test_cabecalhos_de_seguranca PASSED       [  3%]
+tests/integration/test_api.py::test_seed_cria_cardapio_inicial PASSED    [  5%]
+tests/integration/test_api.py::test_login_com_senha_errada PASSED        [  7%]
+tests/integration/test_api.py::test_rotas_da_cantina_exigem_token PASSED [  9%]
+tests/integration/test_api.py::test_token_invalido_e_rejeitado PASSED    [ 11%]
+tests/integration/test_api.py::test_cantina_cadastra_edita_e_remove_produto PASSED [ 12%]
+tests/integration/test_api.py::test_produto_invalido_retorna_400 PASSED  [ 14%]
+tests/integration/test_api.py::test_fluxo_completo_do_pedido PASSED      [ 16%]
+tests/integration/test_api.py::test_transicao_invalida_retorna_409 PASSED [ 18%]
+tests/integration/test_api.py::test_cancelamento_devolve_estoque PASSED  [ 20%]
+tests/integration/test_api.py::test_estoque_insuficiente_retorna_409_e_nao_altera_nada PASSED [ 22%]
+tests/integration/test_api.py::test_produto_inexistente_retorna_409 PASSED [ 24%]
+tests/integration/test_api.py::test_pedido_sem_nome_retorna_400 PASSED   [ 25%]
+tests/integration/test_api.py::test_pedido_inexistente_retorna_404 PASSED [ 27%]
+tests/integration/test_api.py::test_entrada_maliciosa_e_tratada_como_texto PASSED [ 29%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_produto_valido_e_normalizado PASSED [ 31%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_arredonda_preco_para_centavos PASSED [ 33%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_preco_invalido[0] PASSED [ 35%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_preco_invalido[-1] PASSED [ 37%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_preco_invalido[abc] PASSED [ 38%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_preco_invalido[None] PASSED [ 40%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_preco_invalido[250] PASSED [ 42%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_categoria_inexistente PASSED [ 44%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_nome_fora_do_tamanho[] PASSED [ 46%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_nome_fora_do_tamanho[A] PASSED [ 48%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_nome_fora_do_tamanho[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] PASSED [ 50%]
+tests/unit/test_regras_negocio.py::TestValidarProduto::test_rejeita_estoque_negativo PASSED [ 51%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_agrupa_itens_repetidos PASSED [ 53%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_pedido_sem_itens[itens0] PASSED [ 55%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_pedido_sem_itens[None] PASSED [ 57%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_pedido_sem_itens[x] PASSED [ 59%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_quantidade_fora_do_limite[0] PASSED [ 61%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_quantidade_fora_do_limite[-1] PASSED [ 62%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_quantidade_fora_do_limite[6] PASSED [ 64%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_limite_de_itens_por_pedido PASSED [ 66%]
+tests/unit/test_regras_negocio.py::TestValidarItens::test_item_sem_campos PASSED [ 68%]
+tests/unit/test_regras_negocio.py::TestCalcularTotal::test_soma_precos_vezes_quantidade PASSED [ 70%]
+tests/unit/test_regras_negocio.py::TestCalcularTotal::test_sem_erro_de_ponto_flutuante PASSED [ 72%]
+tests/unit/test_regras_negocio.py::TestCalcularTotal::test_lista_vazia PASSED [ 74%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_permitidas[RECEBIDO-EM_PREPARO] PASSED [ 75%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_permitidas[EM_PREPARO-PRONTO] PASSED [ 77%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_permitidas[PRONTO-ENTREGUE] PASSED [ 79%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_permitidas[RECEBIDO-CANCELADO] PASSED [ 81%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_permitidas[EM_PREPARO-CANCELADO] PASSED [ 83%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_proibidas[RECEBIDO-ENTREGUE] PASSED [ 85%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_proibidas[ENTREGUE-RECEBIDO] PASSED [ 87%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_proibidas[PRONTO-CANCELADO] PASSED [ 88%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_proibidas[CANCELADO-EM_PREPARO] PASSED [ 90%]
+tests/unit/test_regras_negocio.py::TestStatusPedido::test_transicoes_proibidas[XYZ-PRONTO] PASSED [ 92%]
+tests/unit/test_regras_negocio.py::test_codigo_do_pedido_tem_formato_e_e_unico PASSED [ 94%]
+tests/unit/test_seguranca.py::test_senha_nunca_e_guardada_em_texto_puro PASSED [ 96%]
+tests/unit/test_seguranca.py::test_token_contem_usuario_e_expiracao PASSED [ 98%]
+tests/unit/test_seguranca.py::test_token_assinado_com_outra_chave_e_rejeitado PASSED [100%]
+
+================================ tests coverage ================================
+_______________ coverage: platform linux, python 3.13.18-final-0 _______________
+
+Name              Stmts   Miss  Cover
+-------------------------------------
+app/__init__.py      45      4    91%
+app/config.py        13      0   100%
+app/models.py        49      0   100%
+app/routes.py        87      3    97%
+app/security.py      31      1    97%
+app/services.py      91      4    96%
+-------------------------------------
+TOTAL               316     12    96%
+============================== 54 passed in 3.16s ==============================

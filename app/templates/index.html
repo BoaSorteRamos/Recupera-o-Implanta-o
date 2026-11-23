@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EstuLanches — Cantina Escolar</title>
+<style>
+  :root { --verde:#1f7a4d; --verde-claro:#e7f4ec; --laranja:#e8862a; --cinza:#5b6470; --borda:#dfe3e8; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background:#f6f7f9; color:#1d2329; }
+  header { background:var(--verde); color:#fff; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+  header h1 { margin:0; font-size:22px; }
+  header small { opacity:.85; }
+  nav button { background:transparent; border:1px solid #ffffff80; color:#fff; padding:8px 14px; border-radius:6px; cursor:pointer; margin-left:8px; }
+  nav button.ativo { background:#fff; color:var(--verde); }
+  main { max-width:1100px; margin:24px auto; padding:0 16px; }
+  .grid { display:grid; grid-template-columns: 2fr 1fr; gap:20px; }
+  @media (max-width: 800px) { .grid { grid-template-columns:1fr; } }
+  .card { background:#fff; border:1px solid var(--borda); border-radius:10px; padding:16px; }
+  h2 { margin-top:0; font-size:18px; }
+  .cat { font-size:12px; font-weight:600; color:var(--cinza); text-transform:uppercase; margin:16px 0 6px; letter-spacing:.04em; }
+  .produto { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--borda); }
+  .produto p { margin:2px 0 0; font-size:13px; color:var(--cinza); }
+  .preco { font-weight:600; margin-right:12px; }
+  button.acao { background:var(--verde); color:#fff; border:0; padding:8px 12px; border-radius:6px; cursor:pointer; }
+  button.acao:disabled { background:#9aa5b1; cursor:not-allowed; }
+  button.sec { background:#fff; color:var(--verde); border:1px solid var(--verde); padding:6px 10px; border-radius:6px; cursor:pointer; }
+  input, select { width:100%; padding:9px; border:1px solid var(--borda); border-radius:6px; margin:4px 0 10px; font-size:14px; }
+  .total { font-size:20px; font-weight:700; margin:12px 0; }
+  .msg { padding:10px; border-radius:6px; margin-top:10px; font-size:14px; }
+  .ok { background:var(--verde-claro); color:var(--verde); }
+  .erro { background:#fdecea; color:#b3261e; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th, td { text-align:left; padding:8px; border-bottom:1px solid var(--borda); vertical-align:top; }
+  .badge { padding:3px 8px; border-radius:10px; font-size:12px; font-weight:600; background:#eef1f4; }
+  .RECEBIDO { background:#fff4e5; color:#a45b00; } .EM_PREPARO { background:#e5f0ff; color:#1a56b0; }
+  .PRONTO { background:var(--verde-claro); color:var(--verde); } .ENTREGUE { background:#eef1f4; color:var(--cinza); }
+  .CANCELADO { background:#fdecea; color:#b3261e; }
+  .oculto { display:none; }
+</style>
+</head>
+<body>
+<header>
+  <div><h1>🥪 EstuLanches</h1><small>Cardápio e pedidos da cantina escolar</small></div>
+  <nav>
+    <button id="tabAluno" class="ativo">Fazer pedido</button>
+    <button id="tabCantina">Painel da cantina</button>
+  </nav>
+</header>
+
+<main>
+  <!-- ÁREA DO ALUNO -->
+  <section id="areaAluno" class="grid">
+    <div class="card"><h2>Cardápio de hoje</h2><div id="cardapio">Carregando…</div></div>
+    <div>
+      <div class="card">
+        <h2>Seu pedido</h2>
+        <div id="carrinho"><p style="color:var(--cinza)">Nenhum item ainda.</p></div>
+        <div class="total">Total: <span id="total">R$ 0,00</span></div>
+        <label>Nome do aluno<input id="nome" maxlength="80"></label>
+        <label>Turma<input id="turma" maxlength="20" placeholder="ex.: 2ºB"></label>
+        <button class="acao" id="enviar" disabled>Enviar pedido</button>
+        <div id="msgPedido"></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h2>Acompanhar pedido</h2>
+        <input id="codigoBusca" placeholder="Código, ex.: EL-1A2B3C">
+        <button class="sec" id="buscar">Consultar</button>
+        <div id="msgBusca"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÁREA DA CANTINA -->
+  <section id="areaCantina" class="oculto">
+    <div class="card" id="loginBox" style="max-width:360px">
+      <h2>Acesso da cantina</h2>
+      <label>Usuário<input id="usuario" autocomplete="username"></label>
+      <label>Senha<input id="senha" type="password" autocomplete="current-password"></label>
+      <button class="acao" id="entrar">Entrar</button>
+      <div id="msgLogin"></div>
+    </div>
+    <div id="painel" class="oculto">
+      <div class="card">
+        <h2 style="display:flex;justify-content:space-between">Pedidos
+          <span><select id="filtro" style="width:auto;margin:0">
+            <option value="">Todos</option><option>RECEBIDO</option><option>EM_PREPARO</option>
+            <option>PRONTO</option><option>ENTREGUE</option><option>CANCELADO</option>
+          </select> <button class="sec" id="atualizar">Atualizar</button> <button class="sec" id="sair">Sair</button></span>
+        </h2>
+        <table><thead><tr><th>Código</th><th>Aluno / Turma</th><th>Itens</th><th>Total</th><th>Status</th><th>Ações</th></tr></thead>
+        <tbody id="tabelaPedidos"></tbody></table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const brl = v => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const $ = id => document.getElementById(id);
+const el = (tag, props = {}, ...filhos) => { const e = Object.assign(document.createElement(tag), props); e.append(...filhos); return e; };
+const mensagem = (alvo, texto, tipo) => { alvo.replaceChildren(el("div", { className: "msg " + tipo, textContent: texto })); };
+let produtos = [], carrinho = {}, token = sessionStorage.getItem("token");
+
+// Abas
+$("tabAluno").onclick = () => trocar(true);
+$("tabCantina").onclick = () => trocar(false);
+function trocar(aluno) {
+  $("areaAluno").classList.toggle("oculto", !aluno);
+  $("areaCantina").classList.toggle("oculto", aluno);
+  $("tabAluno").classList.toggle("ativo", aluno);
+  $("tabCantina").classList.toggle("ativo", !aluno);
+  if (!aluno && token) mostrarPainel();
+}
+
+// Cardápio
+async function carregarCardapio() {
+  produtos = await (await fetch("/api/produtos")).json();
+  const nomes = { LANCHE: "Lanches", BEBIDA: "Bebidas", SAUDAVEL: "Saudáveis", DOCE: "Doces" };
+  const box = $("cardapio"); box.replaceChildren();
+  let ultima = null;
+  for (const p of produtos) {
+    if (p.categoria !== ultima) { box.append(el("div", { className: "cat", textContent: nomes[p.categoria] || p.categoria })); ultima = p.categoria; }
+    const btn = el("button", { className: "acao", textContent: "Adicionar", onclick: () => adicionar(p.id) });
+    box.append(el("div", { className: "produto" },
+      el("div", {}, el("strong", { textContent: p.nome }), el("p", { textContent: p.descricao + " · " + p.estoque + " disponíveis" })),
+      el("div", {}, el("span", { className: "preco", textContent: brl(p.preco) }), btn)));
+  }
+  if (!produtos.length) box.textContent = "Nenhum produto disponível no momento.";
+}
+function adicionar(id) { carrinho[id] = Math.min((carrinho[id] || 0) + 1, 5); desenharCarrinho(); }
+function remover(id) { if (--carrinho[id] <= 0) delete carrinho[id]; desenharCarrinho(); }
+function desenharCarrinho() {
+  const box = $("carrinho"); box.replaceChildren(); let total = 0;
+  for (const [id, qtd] of Object.entries(carrinho)) {
+    const p = produtos.find(x => x.id == id); total += p.preco * qtd;
+    box.append(el("div", { className: "produto" },
+      el("span", { textContent: qtd + "× " + p.nome }),
+      el("span", {}, el("span", { className: "preco", textContent: brl(p.preco * qtd) }),
+        el("button", { className: "sec", textContent: "−", onclick: () => remover(id) }))));
+  }
+  if (!box.children.length) box.append(el("p", { textContent: "Nenhum item ainda.", style: "color:var(--cinza)" }));
+  $("total").textContent = brl(total);
+  $("enviar").disabled = !Object.keys(carrinho).length;
+}
+$("enviar").onclick = async () => {
+  const itens = Object.entries(carrinho).map(([produto_id, quantidade]) => ({ produto_id: +produto_id, quantidade }));
+  const r = await fetch("/api/pedidos", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ nome_aluno: $("nome").value, turma: $("turma").value, itens }) });
+  const d = await r.json();
+  if (r.ok) { mensagem($("msgPedido"), "Pedido enviado! Código: " + d.codigo + " · Total " + brl(d.total), "ok"); carrinho = {}; desenharCarrinho(); carregarCardapio(); $("codigoBusca").value = d.codigo; }
+  else mensagem($("msgPedido"), d.erro, "erro");
+};
+$("buscar").onclick = async () => {
+  const cod = encodeURIComponent($("codigoBusca").value.trim());
+  if (!cod) return;
+  const r = await fetch("/api/pedidos/" + cod); const d = await r.json();
+  r.ok ? mensagem($("msgBusca"), "Pedido " + d.codigo + ": " + d.status.replace("_", " "), "ok") : mensagem($("msgBusca"), d.erro, "erro");
+};
+
+// Cantina
+$("entrar").onclick = async () => {
+  const r = await fetch("/api/auth/login", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username: $("usuario").value, senha: $("senha").value }) });
+  const d = await r.json();
+  if (r.ok) { token = d.token; sessionStorage.setItem("token", token); mostrarPainel(); }
+  else mensagem($("msgLogin"), d.erro, "erro");
+};
+$("sair").onclick = () => { token = null; sessionStorage.removeItem("token"); $("painel").classList.add("oculto"); $("loginBox").classList.remove("oculto"); };
+$("atualizar").onclick = () => carregarPedidos();
+$("filtro").onchange = () => carregarPedidos();
+function mostrarPainel() { $("loginBox").classList.add("oculto"); $("painel").classList.remove("oculto"); carregarPedidos(); }
+const ROTULO = { EM_PREPARO: "Iniciar preparo", PRONTO: "Marcar pronto", ENTREGUE: "Entregar", CANCELADO: "Cancelar" };
+const PROXIMO = { RECEBIDO: ["EM_PREPARO", "CANCELADO"], EM_PREPARO: ["PRONTO", "CANCELADO"], PRONTO: ["ENTREGUE"] };
+async function carregarPedidos() {
+  const r = await fetch("/api/pedidos?status=" + $("filtro").value, { headers: { Authorization: "Bearer " + token } });
+  if (r.status === 401) return $("sair").onclick();
+  const pedidos = await r.json(); const tb = $("tabelaPedidos"); tb.replaceChildren();
+  for (const p of pedidos) {
+    const acoes = el("td");
+    for (const s of PROXIMO[p.status] || []) acoes.append(el("button", { className: "sec", textContent: ROTULO[s], style: "margin:2px", onclick: () => mudar(p.id, s) }));
+    tb.append(el("tr", {},
+      el("td", { textContent: p.codigo }), el("td", { textContent: p.nome_aluno + " · " + p.turma }),
+      el("td", { textContent: p.itens.map(i => i.quantidade + "× " + i.nome).join(", ") }),
+      el("td", { textContent: brl(p.total) }),
+      el("td", {}, el("span", { className: "badge " + p.status, textContent: p.status.replace("_", " ") })), acoes));
+  }
+  if (!pedidos.length) tb.append(el("tr", {}, el("td", { colSpan: 6, textContent: "Nenhum pedido." })));
+}
+async function mudar(id, status) {
+  await fetch("/api/pedidos/" + id + "/status", { method: "PATCH",
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + token }, body: JSON.stringify({ status }) });
+  carregarPedidos();
+}
+carregarCardapio();
+</script>
+</body>
+</html>

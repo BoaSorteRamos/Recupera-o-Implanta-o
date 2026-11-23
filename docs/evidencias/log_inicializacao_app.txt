@@ -1,0 +1,30 @@
+2026-11-23 07:38:55,720 INFO [app] EstuLanches v1.0.0 iniciado (ambiente=production)
+[2026-11-23 07:38:55 -0300] [1227] [INFO] Starting gunicorn 27.0.1
+[2026-11-23 07:38:55 -0300] [1227] [INFO] Listening at: http://0.0.0.0:8000 (1227)
+[2026-11-23 07:38:55 -0300] [1227] [INFO] Using worker: gthread
+[2026-11-23 07:38:55 -0300] [1231] [INFO] Booting worker with pid: 1231
+[2026-11-23 07:38:55 -0300] [1232] [INFO] Booting worker with pid: 1232
+[2026-11-23 07:38:55 -0300] [1233] [INFO] Booting worker with pid: 1233
+127.0.0.1 - - [23/Nov/2026:07:38:58 -0300] "POST /api/auth/login HTTP/1.1" 401 48 "-" "curl/8.5.0"
+127.0.0.1 - - [23/Nov/2026:07:38:58 -0300] "POST /api/auth/login HTTP/1.1" 401 48 "-" "curl/8.5.0"
+127.0.0.1 - - [23/Nov/2026:07:38:58 -0300] "POST /api/auth/login HTTP/1.1" 401 48 "-" "curl/8.5.0"
+127.0.0.1 - - [23/Nov/2026:07:38:59 -0300] "POST /api/auth/login HTTP/1.1" 401 48 "-" "curl/8.5.0"
+127.0.0.1 - - [23/Nov/2026:07:38:59 -0300] "POST /api/auth/login HTTP/1.1" 401 48 "-" "curl/8.5.0"
+2026-11-23 07:38:59,030 INFO [flask-limiter] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: api.login
+127.0.0.1 - - [23/Nov/2026:07:38:59 -0300] "POST /api/auth/login HTTP/1.1" 429 70 "-" "curl/8.5.0"
+2026-11-23 07:38:59,038 INFO [flask-limiter] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: api.login
+127.0.0.1 - - [23/Nov/2026:07:38:59 -0300] "POST /api/auth/login HTTP/1.1" 429 70 "-" "curl/8.5.0"
+127.0.0.1 - - [23/Nov/2026:07:39:11 -0300] "GET / HTTP/1.1" 200 11207 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+127.0.0.1 - - [23/Nov/2026:07:39:11 -0300] "GET /api/produtos HTTP/1.1" 200 939 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+2026-11-23 07:39:11,529 INFO [app] Pedido EL-BB1397 criado (total 16.00)
+127.0.0.1 - - [23/Nov/2026:07:39:11 -0300] "POST /api/pedidos HTTP/1.1" 201 307 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+127.0.0.1 - - [23/Nov/2026:07:39:11 -0300] "GET /api/produtos HTTP/1.1" 200 939 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+2026-11-23 07:39:11,709 INFO [flask-limiter] ratelimit 5 per 1 minute (127.0.0.1) exceeded at endpoint: api.login
+127.0.0.1 - - [23/Nov/2026:07:39:11 -0300] "POST /api/auth/login HTTP/1.1" 429 70 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+127.0.0.1 - - [23/Nov/2026:07:39:49 -0300] "GET / HTTP/1.1" 200 11207 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+127.0.0.1 - - [23/Nov/2026:07:39:49 -0300] "GET /api/produtos HTTP/1.1" 200 939 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+2026-11-23 07:39:49,537 INFO [app] Pedido EL-B25DED criado (total 16.00)
+127.0.0.1 - - [23/Nov/2026:07:39:49 -0300] "POST /api/pedidos HTTP/1.1" 201 307 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+127.0.0.1 - - [23/Nov/2026:07:39:49 -0300] "GET /api/produtos HTTP/1.1" 200 939 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+127.0.0.1 - - [23/Nov/2026:07:39:49 -0300] "POST /api/auth/login HTTP/1.1" 200 140 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
+127.0.0.1 - - [23/Nov/2026:07:39:49 -0300] "GET /api/pedidos?status= HTTP/1.1" 200 926 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.8103.78 Safari/537.36"
