@@ -4,6 +4,17 @@ Sistema web para a cantina da escola: o **aluno** vê o cardápio do dia, monta 
 
 **Problema que resolve:** filas longas no intervalo, pedidos anotados em papel, produtos esgotados vendidos mesmo assim e falta de controle de estoque.
 
+## Entregáveis
+
+| Item | Arquivo |
+|---|---|
+| Dockerfile | [`Dockerfile`](Dockerfile) |
+| Docker Compose | [`docker-compose.yml`](docker-compose.yml) |
+| Ficha RDM (PDF) | [`docs/RDM_EstuLanches.pdf`](docs/RDM_EstuLanches.pdf) |
+| Vídeo (4:59) | [`docs/video/EstuLanches_Willer_video_final.mp4`](docs/video/EstuLanches_Willer_video_final.mp4) |
+| Testes | [`tests/unit`](tests/unit) · [`tests/integration`](tests/integration) |
+| Evidências | [`docs/evidencias`](docs/evidencias) |
+
 ## Tecnologias
 
 | Camada | Tecnologia | Por quê |
@@ -20,7 +31,7 @@ Sistema web para a cantina da escola: o **aluno** vê o cardápio do dia, monta 
 ## Como subir em produção
 
 ```bash
-git clone <seu-repo> && cd estulanches
+git clone https://github.com/BoaSorteRamos/Recupera-o-Implanta-o.git && cd Recupera-o-Implanta-o
 cp .env.example .env          # edite e troque TODAS as senhas e a SECRET_KEY
 docker compose up -d --build
 docker compose ps             # db, redis e app devem estar "healthy"
@@ -89,6 +100,6 @@ Meta: **1 milhão de usuários, 100 mil simultâneos.** Estimativa: cada usuári
 app/            código (rotas, regras de negócio, modelos, segurança, frontend)
 tests/          unit/ e integration/
 scripts/        validar_implantacao.sh · gerar_rdm.py
-docs/           RDM_EstuLanches.pdf · ROTEIRO_VIDEO.md · evidencias/
+docs/           RDM_EstuLanches.pdf · ROTEIRO_VIDEO.md · video/ · evidencias/
 Dockerfile · docker-compose.yml · .env.example
 ```
